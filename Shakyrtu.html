@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>8 Наурыз мерекесіне шақырту 🌸</title>
+
+<style>
+body{
+margin:0;
+font-family:'Segoe UI',sans-serif;
+background:linear-gradient(135deg,#ff9a9e,#fad0c4,#fbc2eb,#a18cd1);
+background-size:400% 400%;
+animation:bg 18s ease infinite;
+overflow-x:hidden;
+color:white;
+}
+
+@keyframes bg{
+0%{background-position:0% 50%}
+50%{background-position:100% 50%}
+100%{background-position:0% 50%}
+}
+
+.glass{
+max-width:850px;
+margin:60px auto;
+padding:40px;
+border-radius:25px;
+background:rgba(255,255,255,0.15);
+backdrop-filter:blur(15px);
+box-shadow:0 25px 60px rgba(0,0,0,0.3);
+text-align:center;
+animation:fadeUp 1.5s ease;
+}
+
+@keyframes fadeUp{
+from{opacity:0;transform:translateY(40px)}
+to{opacity:1;transform:translateY(0)}
+}
+
+h1{
+font-size:32px;
+text-shadow:0 0 15px rgba(255,255,255,0.8);
+}
+
+button{
+margin:10px;
+padding:12px 28px;
+font-size:18px;
+border:none;
+border-radius:30px;
+cursor:pointer;
+transition:0.3s;
+color:white;
+}
+
+.yes{
+background:#00c853;
+box-shadow:0 0 20px #00ff88;
+}
+
+.no{
+background:#ff1744;
+box-shadow:0 0 20px #ff4d6d;
+}
+
+.music{
+background:#2962ff;
+box-shadow:0 0 20px #448aff;
+position:fixed;
+top:5px;
+right:15px;
+z-index:100;
+}
+
+button:hover{
+transform:scale(1.1);
+}
+
+.result{
+margin-top:20px;
+font-size:20px;
+min-height:30px;
+}
+
+.effect{
+position:fixed;
+top:-50px;
+font-size:26px;
+animation:fall linear forwards;
+}
+
+@keyframes fall{
+to{
+transform:translateY(110vh) rotate(720deg);
+opacity:0;
+}
+}
+
+.complimentBar{
+margin-top:20px;
+font-size:18px;
+min-height:25px;
+color:#fff;
+font-weight:bold;
+}
+
+.popup{
+position:fixed;
+bottom:20px;
+right:20px;
+background:white;
+color:#333;
+padding:15px 20px;
+border-radius:15px;
+display:none;
+box-shadow:0 10px 25px rgba(0,0,0,0.3);
+}
+</style>
+</head>
+
+<body>
+
+<div class="glass">
+
+<h1>🌸 8 Наурыз мерекесіне шақырту 🌸</h1>
+
+<p id="personal"><b>Сыныптың ең әдемі, ең вайбты қыздарына ✨</b></p>
+<p>Уақыттарыңызды 2–3 сағат бөліп келулеріңізді сұраймыз.</p>
+<p>5 наурыз күні сағат 17:30 да KaRima ресторанында күтеміз.</p>
+
+<button class="yes" onclick="accept()">🌸 Келемін</button>
+<button class="no" id="noBtn">😢 Келе алмаймын</button>
+<button class="music" onclick="playMusic()">🎵 Музыка қосу</button>
+
+<div class="result" id="result"></div>
+<div class="complimentBar" id="complimentBar"></div>
+
+</div>
+
+<div class="popup" id="popup"></div>
+
+<audio id="bgMusic" loop>
+<source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_8f9b3f8c8e.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+// Комплименттер кезек-кезек шығады
+const compliments=[
+"Сіз кірген сәттен бастап локация автоматты түрде премиум режимге өтеді.",
+  "Сіздің вайбыңыз — low battery адамдарға powerbank.",
+  "Сіз жоқ жерде атмосфера «черновик» режимінде тұрады.",
+  "Сіз кірсеңіз болды, кеш обновление алып, жаңа версияға өтеді.",
+  "Сіздің стиліңіз — Pinterest те сақтап алатын деңгей.",
+  "Сіз келген жерде адамдар өзін straight қылып ұстап қалады 😄",
+  "Сіздің энергияңыз — Wi-Fi сияқты: көрінбейді, бірақ бәрін ұстап тұр.",
+  "Сізсіз бұл кеш жай ғана жиналыс болып қалар еді.",
+  "Сіздің харизмаңыз — камерасыз-ақ slow motion эффект береді.",
+  "Сізбен өткен уақыт — «повторить бы» дейтін момент.",
+  "Сіз кіргенде залдың өзі posture түзеп алады.",
+  "Сіздің күлімсіреуіңіз — фильтрсіз-ақ 4K quality.",
+  "Сіз келген кеш автоматты түрде «best memories» папкасына кетеді.",
+  "Cіз бар жерде вайб та, контент те бар.",
+  "Сіз — кез келген ортаға «главный персонаж» эффектін қосатын адамсыз."
+];
+
+let i=0;
+function rotateCompliment(){
+document.getElementById("complimentBar").innerText=compliments[i];
+i=(i+1)%compliments.length;
+}
+setInterval(rotateCompliment,4000);
+rotateCompliment();
+
+// Қатысамын батырмасы
+function accept(){
+document.getElementById("result").innerHTML="Супер👏, Біз сізді күтеміз🌹;
+launchEffects();
+showPopup("💌 Комплимент: Бүгін сен ерекше жарқырап тұрсың!");
+if(navigator.vibrate){navigator.vibrate(200);}
+playMusic();
+}
+
+// Падающие эффекттер
+function launchEffects(){
+for(let j=0;j<50;j++){
+let el=document.createElement('div');
+el.className='effect';
+el.innerHTML=['🌸','💖','🎊','✨'][Math.floor(Math.random()*4)];
+el.style.left=Math.random()*100+'vw';
+el.style.animationDuration=(3+Math.random()*3)+'s';
+document.body.appendChild(el);
+setTimeout(()=>el.remove(),6000);
+}
+}
+
+// “Қате келсе” кнопкасы убегает
+const noBtn=document.getElementById("noBtn");
+noBtn.addEventListener("mouseover",()=>{
+noBtn.style.position="absolute";
+noBtn.style.top=Math.random()*300+"px";
+noBtn.style.left=Math.random()*500+"px";
+});
+
+// Музыка
+function playMusic(){
+const music=document.getElementById("bgMusic");
+music.volume=0.7;
+music.play();
+}
+
+// Popup көрсету
+function showPopup(text){
+const popup=document.getElementById("popup");
+popup.innerHTML=text;
+popup.style.display="block";
+setTimeout(()=>popup.style.display="none",4000);
+}
+</script>
+
+</body>
+</html>
